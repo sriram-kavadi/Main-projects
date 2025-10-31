@@ -1,0 +1,26 @@
+<% layout("/layouts/boilerplate")%>
+<body >
+        <div class="idInder-body">
+                <div class="idInder-div">
+                        <img src="<%=i.image%>" class="picture" alt="picture" style="width: 19rem;" >
+                        <div class="info-div">
+                                <h5><a class="link" href="http://localhost:8080/listing/:<%=i.id%>"><%=i.title%></a></h5>
+                                <p><%=i.description%></p>
+                                <p><b>Price: </b> &#8377;<%=(i.price).toLocaleString("en-IN")%></p>
+                                <p><b>Location: </b><%=i.location%></p>
+                                <p><b>Country: </b><%=i.country%></p>
+                                <div class="btnAdjust">
+                                        <form method="get" action="http://localhost:8080/listing/<%=i.id%>/edit">
+                                                <button class="btn btn-danger edit">Edit</button>
+                                        </form>
+                                        <form method="POST" action="http://localhost:8080/listing/<%=i.id%>?_method=DELETE">
+                                                <button class="btn btn-dark delete">Delete</button>
+                                        </form>
+                                </div>
+                        </div>
+                        
+                </div>
+        </div>
+        
+        
+</body>
