@@ -2,7 +2,9 @@
 <body >
         <div class="idInder-body">
                 <div class="idInder-div">
-                        <img src="<%=i.image%>" class="picture" alt="picture" style="width: 19rem;" >
+                        <div class="image">
+                                <img src="<%=i.image%>" class="picture" alt="picture" >
+                        </div>
                         <div class="info-div">
                                 <h5><a class="link" href="http://localhost:8080/listing/:<%=i.id%>"><%=i.title%></a></h5>
                                 <p><%=i.description%></p>
