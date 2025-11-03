@@ -6,6 +6,10 @@ const path = require("path");
 const mongoose = require("mongoose");
 const ejsMate=require("ejs-mate");
 
+//set-up for joi function
+const listingSchema=require("./schema")
+
+
 //set-up for the wrapAsyc function
 const asyncwrap=require("./utils/wrapAsync")
 //set-up for the ExpressError class
@@ -45,14 +49,24 @@ app.get("/listing/new",(req,res)=>{
     res.render("listing/newindex.ejs");
 })
 
-app.post("/listing",asyncwrap(async (req,res)=>{
-    if (!req.body || Object.keys(req.body).length === 0) {
-        throw new ExpressError(400, "Send valid data for listing");
+const validate=(req,res,next)=>{
+    const {error} = listingSchema.validate(req.body);
+    if(error){
+        let errMsg=error.details.map(el=>el.message).join(",")
+        throw new ExpressError(400,errMsg)
+    }else{
+        next();
     }
-    let newList=new listing(req.body);
+
+}
+
+app.post("/listing",validate,asyncwrap( async (req, res) => {
+    // directly use req.body, not req.body.listing
+    const newList = new listing(req.body);
     await newList.save();
     res.redirect("/listing");
-}))
+}));
+
 
 app.get("/listing/:id",asyncwrap( async (req,res,next)=>{
     let { id } = req.params;
