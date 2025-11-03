@@ -2,6 +2,17 @@ body{
     font-family: "Spectral", serif 
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Hide number input spinners (Firefox) */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 .navbar{
     height: 10vh;
     font-size: larger;
@@ -100,15 +111,23 @@ body{
 .info{
     width:50%;
 }
-
-.form-div{
-    height: 78vh;
+.bodyNew{
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
     justify-content: center;
 }
-
+.form-div{
+    width: 50%;
+}
+.needs-validation{
+    min-height: 78vh;
+    width: 70vw;
+    height: auto;
+    width: auto !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
 .idInder-body{
     display: flex;
     flex-direction: column;
