@@ -1,35 +1,72 @@
 <% layout("/layouts/boilerplate")%>
-<body>
-     <div class="form-div">
-        <form method="POST" action="http://localhost:8080/listing/<%=i.id%>?_method=PUT">
+<body >
+    <div class="bodyNew">    
+    <div class="form-div">
+        <form method="POST" novalidate class="needs-validation"  action="http://localhost:8080/listing/<%=i.id%>?_method=PUT">
             <div class="mb-3">
                 <label for="title" class="form-label">Title: </label>
                 <input type="text" id="title" class="form-control" name="title" required value="<%=i.title%>">
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Please choose a Title.
+                    </div>
             </div>
             <div class="mb-3">
                 <label for="description" class="form-label">Description: </label>
-                <input type="text" id="description" class="form-control" name="description"required value="<%=i.description%>">
+                <input type="text" id="description" class="form-control" name="description"required row="2" value="<%=i.description%>">
+                <div class="valid-feedback">
+                        Looks good!
+                </div>
+                <div class="invalid-feedback">
+                    Please choose a Description.
+                </div>
             </div>
             <div class="mb-3">
                 <label for="image" class="form-label">Image(url-link): </label>
-                <input type="text" id="image" name="image" class="form-control" value="<%=i.image%>">
+                <input type="text" id="image" name="image" required class="form-control" value="<%=i.image%>">
+                <div class="valid-feedback">
+                        Looks good!
+                </div>
+                <div class="invalid-feedback">
+                    Please choose a Image.
+                </div>
             </div>
             <div class="mb-3">
                 <label for="price" class="form-label">Price: </label>
-                <input type="number" id="price" name="price"required class="form-control" value="<%=i.price%>">
+                <input type="number" id="price" name="price"required class="form-control" min="1" max="1000000" value="<%=i.price%>">
+                <div class="valid-feedback">
+                        Looks good!
+                </div>
+                <div class="invalid-feedback">
+                    Please choose a Price.
+                </div>
             </div>
             <div class="mb-3 place">
                 <div class="mb-3 info">
                     <label for="location" class="form-label">Location: </label>
                     <input type="text" id="location" name="location"required class="form-control" value="<%=i.location%>">
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Please choose a Location.
+                    </div>
                 </div>
                 <div class="mb-3 info">
                     <label for="country" class="form-label">Country: </label>
                     <input type="text" id="country" name="country"required class="form-control" value="<%=i.country%>">
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Please choose a Country.
+                    </div>
                 </div>
             </div>
-            <button class="btn btn-primary" type="submit" >Update</button>
+            <button class="btn btn-danger" type="submit" >Update</button>
         </form>
     </div>
-    
+    </div>
 </body>
