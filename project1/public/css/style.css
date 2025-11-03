@@ -153,3 +153,18 @@ input[type=number] {
     object-fit: cover;
     border-radius: 10px;
 }
+
+.alerts{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 78vh;
+}
+.alert{
+    height: 40%;
+    width: 60%;
+    border:0.25rem solid #4e191f !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
