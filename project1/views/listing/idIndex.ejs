@@ -1,28 +1,54 @@
 <% layout("/layouts/boilerplate")%>
 <body >
-        <div class="idInder-body">
-                <div class="idInder-div">
-                        <div class="image">
-                                <img src="<%=i.image%>" class="picture" alt="picture" >
-                        </div>
-                        <div class="info-div">
-                                <h5><a class="link" href="http://localhost:8080/listing/:<%=i.id%>"><%=i.title%></a></h5>
-                                <p><%=i.description%></p>
-                                <p><b>Price: </b> &#8377;<%=(i.price).toLocaleString("en-IN")%></p>
-                                <p><b>Location: </b><%=i.location%></p>
-                                <p><b>Country: </b><%=i.country%></p>
-                                <div class="btnAdjust">
-                                        <form method="get" action="http://localhost:8080/listing/<%=i.id%>/edit">
-                                                <button class="btn btn-danger edit">Edit</button>
-                                        </form>
-                                        <form method="POST" action="http://localhost:8080/listing/<%=i.id%>?_method=DELETE">
-                                                <button class="btn btn-dark delete">Delete</button>
-                                        </form>
-                                </div>
-                        </div>
-                        
+    <div class="idInder-body">
+        <div class="idInder-div">
+            <div class="image">
+                <img src="<%=i.image%>" class="picture" alt="picture" >
+            </div>
+            <div class="info-div">
+                <h5><a class="link" href="http://localhost:8080/listing/:<%=i.id%>"><%=i.title%></a></h5>
+                <p><%=i.description%></p>
+                <p><b>Price: </b> &#8377;<%=(i.price).toLocaleString("en-IN")%></p>
+                <p><b>Location: </b><%=i.location%></p>
+                <p><b>Country: </b><%=i.country%></p>
+                <div class="btnAdjust">
+                    <form method="get" action="http://localhost:8080/listing/<%=i.id%>/edit">
+                        <button class="btn btn-danger edit">Edit</button>
+                    </form>
+                    <form method="POST" action="http://localhost:8080/listing/<%=i.id%>?_method=DELETE">
+                        <button class="btn btn-dark delete">Delete</button>
+                    </form>
                 </div>
+            </div>  
+        </div>
+    </div>
+    <hr>
+    <div class="idReview">
+        <div class="mainReview">
+            <h4>Leave a review</h4>
+            <form method="POST" novalidate class=" needs-validation" action="http://localhost:8080/listing/:<%=i.id%>/review">
+                <div class="mb-1">
+                    <div class="rating">
+                        <label for="range4" class="form-label ">Rating: </label>
+                        <span id="rangeValue"></span>
+                    </div>
+                    <input type="range" class="form-range form-control" min="1" max="5" id="range4" name="rating">
+                </div>
+                <div class="mb-1">
+                    <label for="floatingTextarea2" class="form-label"  >comment:</label>
+                    <textarea class="form-control" placeholder="Leave a comment here" name="comment" id="floatingTextarea2" style="height: 100px" required></textarea>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Please enter comment
+                    </div>
+                </div>
+                <div class="mb-1">
+                    <button class="btn btn-danger">Submit</button>
+                </div> 
+            </form>
         </div>
         
-        
+    </div>  
 </body>

@@ -1,5 +1,6 @@
 const express = require("express");
 const listing = require("./models/listing");
+const review=require("./models/review");
 const app = express();
 const port = 8080;
 const path = require("path");
@@ -7,7 +8,7 @@ const mongoose = require("mongoose");
 const ejsMate=require("ejs-mate");
 
 //set-up for joi function
-const listingSchema=require("./schema")
+const {listingSchema,reviewSchema}=require("./schema")
 
 
 //set-up for the wrapAsyc function
@@ -59,6 +60,7 @@ const validate=(req,res,next)=>{
     }
 
 }
+
 
 app.post("/listing",validate,asyncwrap( async (req, res) => {
     // directly use req.body, not req.body.listing
@@ -125,6 +127,35 @@ app.delete("/listing/:id",asyncwrap( async (req,res,next)=>{
 app.get("/", (req, res) => {
     res.send("hi, I am root");
 });
+
+const reviewValidate=(req,res,next)=>{
+    const {error} = reviewSchema.validate(req.body);
+    if(error){
+        let errMsg=error.details.map(el=>el.message).join(",")
+        throw new ExpressError(400,errMsg)
+    }else{
+        next();
+    }
+}
+
+app.post("/listing/:id/review",reviewValidate,asyncwrap(async(req,res)=>{
+    let {id}=req.params;
+    const newReview = new review(req.body);
+    await newReview.save();
+    console.log("done")
+    if (id.startsWith(":")) {
+        id = id.slice(1);
+    }
+    const updatedListing = await listing.findByIdAndUpdate(
+        id,
+        { $push: { reviews: newReview._id } },
+        { new: true, runValidators: true }
+    )
+    if(!updatedListing){
+        throw new ExpressError(404,"Listing not found");
+    }
+    res.redirect(`/listing/${id}`);
+}))
 
 app.use((req, res, next) => {
     next(new ExpressError(404, "Page not found!"));

@@ -1,7 +1,7 @@
 //set-up for joi
 const joi=require("joi")
 
-module.exports=listingSchema=joi.object({
+const listingSchema=joi.object({
     title:joi.string().required(),
     description:joi.string().required(),
     location:joi.string().required(),
@@ -10,3 +10,9 @@ module.exports=listingSchema=joi.object({
     image:joi.string().allow("",null)
 
 })
+const reviewSchema=joi.object({
+    comment:joi.string().required(),
+    rating:joi.number().required()
+})
+
+module.exports={listingSchema,reviewSchema}
