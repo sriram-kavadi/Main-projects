@@ -46,22 +46,16 @@ const reviewCall=()=>{
   };
 reviewCall()
 
-// Example starter JavaScript for disabling form submissions if there are invalid fields
-(() => {
-  'use strict'
-
-  // Fetch all the forms we want to apply custom Bootstrap validation styles to
-  const forms = document.querySelectorAll('.need-validation')
-
-  // Loop over them and prevent submission
-  Array.from(forms).forEach(form => {
-    form.addEventListener('submit', event => {
-      if (!form.checkValidity()) {
-        event.preventDefault()
-        event.stopPropagation()
-      }
-
-      form.classList.add('was-validated')
-    }, false)
+const start=()=>{
+  const reviewStar=document.querySelectorAll(".reviewStar")
+  reviewStar.forEach((data)=>{
+    const rating = parseInt(data.dataset.rating);
+    const date = data.dataset.date;
+    let values=``;
+    for(let i=1;i<=rating;i++){
+      values+=`<i class="fa-solid fa-star starColor"></i>`
+    }
+    data.innerHTML = `${values}  <small>${new Date(date).toLocaleDateString()}</small>`;
   })
-})()
+}
+start();

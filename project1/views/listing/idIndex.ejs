@@ -49,6 +49,22 @@
                 </div> 
             </form>
         </div>
-        
-    </div>  
+    </div>
+    <hr>
+     <div class="container text-center">
+            <div class="idAllReviews row row-cols-3">
+    <% for(iS of i.reviews) {%>
+            <div class="col card">
+                <div class="card-body reviewBody">
+                    <div class="username">
+                        <h4>Unknow User</h4>
+                    </div>
+                    <h6 class="card-title reviewStar" data-rating="<%=iS.rating%>" data-date="<%= iS.createAt %>"></h6>
+                    <p class="card-text"><%= iS.comment  %></p>
+                    <a href="#" class="btn btn-primary">Delete Review</a>
+                </div>
+            </div>
+    <% } %>
+        </div>
+    </div>
 </body>

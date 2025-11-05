@@ -85,9 +85,15 @@ input[type=number] {
     margin-bottom: 2%;
 }
 
-.col{
+.colEditBoot{
     display: flex !important;
     height: 20rem !important;
+}
+
+.reviewBody{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
 }
 
 .validationFlex{

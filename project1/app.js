@@ -78,7 +78,8 @@ app.get("/listing/:id",asyncwrap( async (req,res,next)=>{
     if (id.startsWith(":")) {
         id = id.slice(1);
     }
-    const idListing = await listing.findById(id);
+    const idListing = await listing.findById(id).populate("reviews");
+    console.log(idListing)
     if(!idListing){
         throw new ExpressError(404,"Invalid id");
     }
