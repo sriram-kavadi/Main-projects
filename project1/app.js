@@ -10,12 +10,11 @@ const ejsMate=require("ejs-mate");
 //set-up for joi function
 const {listingSchema,reviewSchema}=require("./schema")
 
-
 //set-up for the wrapAsyc function
 const asyncwrap=require("./utils/wrapAsync")
 //set-up for the ExpressError class
 const ExpressError=require("./utils/ExpressError")
-
+//ejsmate for templates
 app.engine("ejs",ejsMate);
 app.set("view engine","ejs")
 app.set("views",path.join(__dirname,"/views"));
@@ -31,154 +30,29 @@ main().then(() => {
 }).catch(err => {
     console.log(err);
 });
-
+//mongodb start-up
 async function main() {
     await mongoose.connect("mongodb://127.0.0.1:27017/project1");
 }
 
+//set-up for the listing route
+const listingRoute=require("./routes/listing");
+app.use("/listing",listingRoute)
+//set-up for review route
+const reviewRoute=require("./routes/review")
+app.use("/listing/:id/review",reviewRoute);
 
-app.get("/listing",asyncwrap(async (req,res)=>{
-    const allListing=await listing.find();
-    if(allListing.length===0){
-        throw new ExpressError(404,"No listing found")
-    }
-    res.render("listing/index.ejs",{allListing})
-
-}))
-
-app.get("/listing/new",(req,res)=>{
-    res.render("listing/newindex.ejs");
-})
-
-const validate=(req,res,next)=>{
-    const {error} = listingSchema.validate(req.body);
-    if(error){
-        let errMsg=error.details.map(el=>el.message).join(",")
-        throw new ExpressError(400,errMsg)
-    }else{
-        next();
-    }
-
-}
-
-
-app.post("/listing",validate,asyncwrap( async (req, res) => {
-    // directly use req.body, not req.body.listing
-    const newList = new listing(req.body);
-    await newList.save();
-    res.redirect("/listing");
-}));
-
-
-app.get("/listing/:id",asyncwrap( async (req,res,next)=>{
-    let { id } = req.params;
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        throw new ExpressError(400, "Invalid ID format");
-    }
-    if (id.startsWith(":")) {
-        id = id.slice(1);
-    }
-    const idListing = await listing.findById(id).populate("reviews");
-    if(!idListing){
-        throw new ExpressError(404,"Invalid id");
-    }
-    res.render("listing/idIndex.ejs", { i:idListing });
-
-}))
-
-app.get("/listing/:id/edit",asyncwrap( async (req,res,next)=>{
-    let {id}=req.params;
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        throw new ExpressError(400, "Invalid ID format");
-    }
-    let editListing=await listing.findById(id);
-    if(!editListing){
-        throw new ExpressError(404, "Listing not found");
-    }
-    res.render("listing/updateIndex.ejs",{i:editListing});
-}))
-
-app.put("/listing/:id", asyncwrap( async (req, res,next) => {
-    let { id } = req.params; // get id from URL
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        throw new ExpressError(400, "Invalid ID format");
-    }
-    let updatedData = req.body; // get updated fields from form
-    let putListing= await listing.findByIdAndUpdate(id, updatedData);
-    if(!putListing){
-        throw new ExpressError(404, "Listing not found");
-    }
-    res.redirect(`/listing/${id}`);
-}));
-
-app.delete("/listing/:id",asyncwrap( async (req,res,next)=>{
-    let {id}=req.params;
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        throw new ExpressError(400, "Invalid ID format");
-    }
-    let deleteListing= await listing.findByIdAndDelete(id);
-    if(!deleteListing){
-        throw new ExpressError(404, "Listing not found");
-    }
-    res.redirect("/listing")
-}))
-
-
+//start-up route
 app.get("/", (req, res) => {
     res.send("hi, I am root");
 });
 
-const reviewValidate=(req,res,next)=>{
-    const {error} = reviewSchema.validate(req.body);
-    if(error){
-        let errMsg=error.details.map(el=>el.message).join(",")
-        throw new ExpressError(400,errMsg)
-    }else{
-        next();
-    }
-}
-
-app.post("/listing/:id/review",reviewValidate,asyncwrap(async(req,res)=>{
-    let {id}=req.params;
-    const newReview = new review(req.body);
-    await newReview.save();
-    console.log("done")
-    if (id.startsWith(":")) {
-        id = id.slice(1);
-    }
-    const updatedListing = await listing.findByIdAndUpdate(
-        id,
-        { $push: { reviews: newReview._id } },
-        { new: true, runValidators: true }
-    )
-    if(!updatedListing){
-        throw new ExpressError(404,"Listing not found");
-    }
-    res.redirect(`/listing/${id}`);
-}))
-
-//review delete route 
-app.delete("/listing/:id/review/:reviewId",asyncwrap(async(req,res)=>{
-    let {id,reviewId}=req.params;
-    if ((!mongoose.Types.ObjectId.isValid(id))||(!mongoose.Types.ObjectId.isValid(reviewId))) {
-        throw new ExpressError(400, "Invalid ID format");
-    }
-    let listingUpdate=await listing.findByIdAndUpdate(id,{$pull:{reviews:reviewId}});
-    let reviewDelete=await review.findByIdAndDelete(reviewId);
-    if(!listingUpdate){
-        throw new ExpressError(404,"Listing not found");
-    }
-    if(!reviewDelete){
-        throw new ExpressError(404,"Review not found");
-    }
-    res.redirect(`/listing/${id}`)
-    console.log("success!!")
-}))
-
+//works if route does not exits
 app.use((req, res, next) => {
     next(new ExpressError(404, "Page not found!"));
 });
 
+//throws an error
 app.use((err,req,res,next)=>{
     let{status=500,message="something went wrong"}=err;
     res.status(status).render("error.ejs",{err});
