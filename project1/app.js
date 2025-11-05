@@ -79,7 +79,6 @@ app.get("/listing/:id",asyncwrap( async (req,res,next)=>{
         id = id.slice(1);
     }
     const idListing = await listing.findById(id).populate("reviews");
-    console.log(idListing)
     if(!idListing){
         throw new ExpressError(404,"Invalid id");
     }
@@ -156,6 +155,24 @@ app.post("/listing/:id/review",reviewValidate,asyncwrap(async(req,res)=>{
         throw new ExpressError(404,"Listing not found");
     }
     res.redirect(`/listing/${id}`);
+}))
+
+//review delete route 
+app.delete("/listing/:id/review/:reviewId",asyncwrap(async(req,res)=>{
+    let {id,reviewId}=req.params;
+    if ((!mongoose.Types.ObjectId.isValid(id))||(!mongoose.Types.ObjectId.isValid(reviewId))) {
+        throw new ExpressError(400, "Invalid ID format");
+    }
+    let listingUpdate=await listing.findByIdAndUpdate(id,{$pull:{reviews:reviewId}});
+    let reviewDelete=await review.findByIdAndDelete(reviewId);
+    if(!listingUpdate){
+        throw new ExpressError(404,"Listing not found");
+    }
+    if(!reviewDelete){
+        throw new ExpressError(404,"Review not found");
+    }
+    res.redirect(`/listing/${id}`)
+    console.log("success!!")
 }))
 
 app.use((req, res, next) => {

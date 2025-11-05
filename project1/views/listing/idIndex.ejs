@@ -6,16 +6,16 @@
                 <img src="<%=i.image%>" class="picture" alt="picture" >
             </div>
             <div class="info-div">
-                <h5><a class="link" href="http://localhost:8080/listing/:<%=i.id%>"><%=i.title%></a></h5>
+                <h5><a class="link" href="/listing/:<%=i.id%>"><%=i.title%></a></h5>
                 <p><%=i.description%></p>
                 <p><b>Price: </b> &#8377;<%=(i.price).toLocaleString("en-IN")%></p>
                 <p><b>Location: </b><%=i.location%></p>
                 <p><b>Country: </b><%=i.country%></p>
                 <div class="btnAdjust">
-                    <form method="get" action="http://localhost:8080/listing/<%=i.id%>/edit">
+                    <form method="get" action="/listing/<%=i.id%>/edit">
                         <button class="btn btn-danger edit">Edit</button>
                     </form>
-                    <form method="POST" action="http://localhost:8080/listing/<%=i.id%>?_method=DELETE">
+                    <form method="POST" action="/listing/<%=i.id%>?_method=DELETE">
                         <button class="btn btn-dark delete">Delete</button>
                     </form>
                 </div>
@@ -26,7 +26,7 @@
     <div class="idReview">
         <div class="mainReview">
             <h4>Leave a review</h4>
-            <form method="POST" novalidate class=" needs-validation" action="http://localhost:8080/listing/:<%=i.id%>/review">
+            <form method="POST" novalidate class=" needs-validation" action="/listing/:<%=i.id%>/review">
                 <div class="mb-1">
                     <div class="rating">
                         <label for="range4" class="form-label ">Rating: </label>
@@ -61,10 +61,14 @@
                     </div>
                     <h6 class="card-title reviewStar" data-rating="<%=iS.rating%>" data-date="<%= iS.createAt %>"></h6>
                     <p class="card-text"><%= iS.comment  %></p>
-                    <a href="#" class="btn btn-primary">Delete Review</a>
+                    <form method="POST" action="/listing/<%=i.id%>/review/<%=iS.id%>?_method=DELETE">
+                        <button class="btn btn-primary" type="submit">Delete Review</button>
+                    </form>
                 </div>
             </div>
     <% } %>
+
+    
         </div>
     </div>
 </body>
