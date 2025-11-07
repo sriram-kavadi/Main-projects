@@ -9,6 +9,7 @@ const ExpressError=require("../utils/ExpressError")
 //set-up for joi function
 const {listingSchema,reviewSchema}=require("../schema")
 const mongoose = require("mongoose");
+
 //view listing
 router.get("/",asyncwrap(async (req,res)=>{
     const allListing=await listing.find();
@@ -42,6 +43,9 @@ router.post("/",validate,asyncwrap( async (req, res) => {
     // directly use req.body, not req.body.listing
     const newList = new listing(req.body);
     await newList.save();
+    if(newList){
+        req.flash("success","Listing is created");
+    }
     res.redirect("/listing");
 }));
 
@@ -72,6 +76,9 @@ router.get("/:id/edit",asyncwrap( async (req,res,next)=>{
     if(!editListing){
         throw new ExpressError(404, "Listing not found");
     }
+    if(editListing){
+        req.flash("success","Listing is edited")
+    }
     res.render("listing/updateIndex.ejs",{i:editListing});
 }))
 
@@ -86,6 +93,9 @@ router.put("/:id", asyncwrap( async (req, res,next) => {
     if(!putListing){
         throw new ExpressError(404, "Listing not found");
     }
+    if(putListing){
+        req.flash("success","Listing is updated");
+    }
     res.redirect(`/listing/${id}`);
 }));
 
@@ -98,6 +108,9 @@ router.delete("/:id",asyncwrap( async (req,res,next)=>{
     let deleteListing= await listing.findByIdAndDelete(id);
     if(!deleteListing){
         throw new ExpressError(404, "Listing not found");
+    }
+    if(deleteListing){
+        req.flash("success","Listing is deleted")
     }
     res.redirect("/listing")
 }))

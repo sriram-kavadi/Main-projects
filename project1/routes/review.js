@@ -39,6 +39,9 @@ router.post("/",reviewValidate,asyncwrap(async(req,res)=>{
     if(!updatedListing){
         throw new ExpressError(404,"Listing not found");
     }
+    if(updatedListing){
+        req.flash("success","Review is added");
+    }
     console.log("completed :)")
     res.redirect(`/listing/${id}`);
 }))
@@ -56,6 +59,9 @@ router.delete("/:reviewId",asyncwrap(async(req,res)=>{
     }
     if(!reviewDelete){
         throw new ExpressError(404,"Review not found");
+    }
+    if(reviewDelete){
+        req.flash("success","Review is deleted")
     }
     res.redirect(`/listing/${id}`)
     console.log("success!!")

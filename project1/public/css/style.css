@@ -213,7 +213,12 @@ input[type=number] {
     height: 78vh;
 }
 
-.alert{
+.successStyle{
+    display: flex;
+    justify-content: space-between;
+}
+
+.alertss{
     height: 40%;
     width: 60%;
     border:0.25rem solid #4e191f !important;

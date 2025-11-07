@@ -35,6 +35,24 @@ async function main() {
     await mongoose.connect("mongodb://127.0.0.1:27017/project1");
 }
 
+//session npm package set-up
+const session=require("express-session");
+const sessionOptions={
+    secret:"mypeoples",
+    resave:false,
+    saveUninitialized:true
+}
+app.use(session(sessionOptions))
+//flash npm package set-up
+const flash=require("connect-flash")
+app.use(flash())
+app.use((req,res,next)=>{
+    res.locals.successMsg=req.flash("success")
+    next()
+})
+//cookie-parser npm package set-up
+const cookieParser=require("cookie-parser")
+
 //set-up for the listing route
 const listingRoute=require("./routes/listing");
 app.use("/listing",listingRoute)
