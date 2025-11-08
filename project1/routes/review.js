@@ -12,7 +12,7 @@ const ExpressError=require("../utils/ExpressError")
 const {listingSchema,reviewSchema}=require("../schema")
 const mongoose = require("mongoose");
 // isLoggedIn middleware
-const isLoggedIn=require("../middleware")
+const {isLoggedIn}=require("../middleware")
 //joi validation checker set-up
 const reviewValidate=(req,res,next)=>{
     const {error} = reviewSchema.validate(req.body);

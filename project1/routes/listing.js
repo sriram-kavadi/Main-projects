@@ -10,7 +10,7 @@ const ExpressError=require("../utils/ExpressError")
 const {listingSchema,reviewSchema}=require("../schema")
 const mongoose = require("mongoose");
 // isLoggedIn middleware
-const isLoggedIn=require("../middleware");
+const {isLoggedIn}=require("../middleware");
 //view listing
 router.get("/",asyncwrap(async (req,res)=>{
     const allListing=await listing.find();

@@ -49,18 +49,20 @@ app.use(session(sessionOptions))
 //flash npm package set-up
 const flash=require("connect-flash")
 app.use(flash())
-app.use((req,res,next)=>{
-    res.locals.successMsg=req.flash("success")
-    res.locals.errorMsg=req.flash("error")
-    next()
-})
-
 //passport 
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(user.authenticate()))
 passport.serializeUser(user.serializeUser());
 passport.deserializeUser(user.deserializeUser());
+
+app.use((req,res,next)=>{
+    res.locals.successMsg=req.flash("success")
+    res.locals.errorMsg=req.flash("error")
+    res.locals.currUser=req.user;
+    next()
+})
+
 //cookie-parser npm package set-up
 const cookieParser=require("cookie-parser")
 

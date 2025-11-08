@@ -1,9 +1,18 @@
 
-const isLoggedIn=(req,res,next)=>{
+module.exports.isLoggedIn=(req,res,next)=>{
+    console.log("hello")
+    console.log(req.originalUrl)
     if(!req.isAuthenticated()){
+        req.session.redirectUrl=req.originalUrl;
         req.flash("error","You must to be logged")
         return res.redirect("/login")
     }
     next();
 }
-module.exports=isLoggedIn;
+
+module.exports.saveRedirectUrl=(req,res,next)=>{
+    if(req.session.redirectUrl){
+        res.locals.redirectUrl=req.session.redirectUrl
+    }
+    next()
+}
