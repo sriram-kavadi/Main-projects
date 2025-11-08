@@ -11,7 +11,8 @@ const ExpressError=require("../utils/ExpressError")
 //set-up for joi function
 const {listingSchema,reviewSchema}=require("../schema")
 const mongoose = require("mongoose");
-
+// isLoggedIn middleware
+const isLoggedIn=require("../middleware")
 //joi validation checker set-up
 const reviewValidate=(req,res,next)=>{
     const {error} = reviewSchema.validate(req.body);
@@ -23,7 +24,7 @@ const reviewValidate=(req,res,next)=>{
     }
 }
 //post request to create a new review
-router.post("/",reviewValidate,asyncwrap(async(req,res)=>{
+router.post("/",isLoggedIn,reviewValidate,asyncwrap(async(req,res)=>{
     let {id}=req.params;
     const newReview = new review(req.body);
     await newReview.save();
@@ -47,7 +48,7 @@ router.post("/",reviewValidate,asyncwrap(async(req,res)=>{
 }))
 
 //review delete route 
-router.delete("/:reviewId",asyncwrap(async(req,res)=>{
+router.delete("/:reviewId",isLoggedIn,asyncwrap(async(req,res)=>{
     let {id,reviewId}=req.params;
     if ((!mongoose.Types.ObjectId.isValid(id))||(!mongoose.Types.ObjectId.isValid(reviewId))) {
         throw new ExpressError(400, "Invalid ID format");

@@ -9,7 +9,8 @@ const ExpressError=require("../utils/ExpressError")
 //set-up for joi function
 const {listingSchema,reviewSchema}=require("../schema")
 const mongoose = require("mongoose");
-
+// isLoggedIn middleware
+const isLoggedIn=require("../middleware");
 //view listing
 router.get("/",asyncwrap(async (req,res)=>{
     const allListing=await listing.find();
@@ -21,7 +22,7 @@ router.get("/",asyncwrap(async (req,res)=>{
 }))
 
 //create listing
-router.get("/new",(req,res)=>{
+router.get("/new",isLoggedIn,(req,res)=>{
     res.render("listing/newindex.ejs");
 })
 
@@ -39,7 +40,7 @@ const validate=(req,res,next)=>{
 }
 
 //post request for creating list
-router.post("/",validate,asyncwrap( async (req, res) => {
+router.post("/",isLoggedIn,validate,asyncwrap( async (req, res) => {
     // directly use req.body, not req.body.listing
     const newList = new listing(req.body);
     await newList.save();
@@ -67,7 +68,7 @@ router.get("/:id",asyncwrap( async (req,res,next)=>{
 }))
 
 //edit a list using a id
-router.get("/:id/edit",asyncwrap( async (req,res,next)=>{
+router.get("/:id/edit",isLoggedIn,asyncwrap( async (req,res,next)=>{
     let {id}=req.params;
     if (!mongoose.Types.ObjectId.isValid(id)) {
         throw new ExpressError(400, "Invalid ID format");
@@ -83,7 +84,7 @@ router.get("/:id/edit",asyncwrap( async (req,res,next)=>{
 }))
 
 // updating the list using the id
-router.put("/:id", asyncwrap( async (req, res,next) => {
+router.put("/:id",isLoggedIn, asyncwrap( async (req, res,next) => {
     let { id } = req.params; // get id from URL
     if (!mongoose.Types.ObjectId.isValid(id)) {
         throw new ExpressError(400, "Invalid ID format");
@@ -100,7 +101,7 @@ router.put("/:id", asyncwrap( async (req, res,next) => {
 }));
 
 //deleting a list by using id
-router.delete("/:id",asyncwrap( async (req,res,next)=>{
+router.delete("/:id",isLoggedIn,asyncwrap( async (req,res,next)=>{
     let {id}=req.params;
     if (!mongoose.Types.ObjectId.isValid(id)) {
         throw new ExpressError(400, "Invalid ID format");
