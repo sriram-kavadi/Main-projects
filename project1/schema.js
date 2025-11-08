@@ -15,4 +15,6 @@ const reviewSchema=joi.object({
     rating:joi.number().required().min(1).max(5)
 })
 
+
+
 module.exports={listingSchema,reviewSchema}

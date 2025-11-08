@@ -6,7 +6,10 @@ const port = 8080;
 const path = require("path");
 const mongoose = require("mongoose");
 const ejsMate=require("ejs-mate");
-
+//set-up passport passport local packages user
+const passport=require("passport");
+const LocalStrategy=require("passport-local");
+const user=require("./models/user");
 //set-up for joi function
 const {listingSchema,reviewSchema}=require("./schema")
 
@@ -48,8 +51,16 @@ const flash=require("connect-flash")
 app.use(flash())
 app.use((req,res,next)=>{
     res.locals.successMsg=req.flash("success")
+    res.locals.errorMsg=req.flash("error")
     next()
 })
+
+//passport 
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(user.authenticate()))
+passport.serializeUser(user.serializeUser());
+passport.deserializeUser(user.deserializeUser());
 //cookie-parser npm package set-up
 const cookieParser=require("cookie-parser")
 
@@ -59,6 +70,20 @@ app.use("/listing",listingRoute)
 //set-up for review route
 const reviewRoute=require("./routes/review")
 app.use("/listing/:id/review",reviewRoute);
+//set-up for user route
+const userRoute=require("./routes/user");
+app.use("/",userRoute);
+//demo user
+// app.get("/demouser",async(req,res)=>{
+//     let demouser=new user(
+//         {
+//             email:"kavadi.nikhil@gmail.com",
+//             username:"nikhil15_07"
+//         }
+//     )
+//     let registerUser=await user.register(demouser,"helloworld");
+//     res.send(registerUser); 
+// })
 
 //start-up route
 app.get("/", (req, res) => {

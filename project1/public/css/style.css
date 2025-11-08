@@ -53,6 +53,27 @@ input[type=number] {
     height: 12vh;
 }
 
+.usernameStyle{
+    width: 100% !important;
+}
+
+.userMain{
+    height: 78vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.formUserMain{
+    width: 55%;
+}
+
+.formUser{
+    display: flex;
+    flex-direction: column;
+}
+
 .btnAdjust{
     display: flex;
     justify-content: space-around;
