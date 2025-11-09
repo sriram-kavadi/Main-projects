@@ -7,18 +7,21 @@
             </div>
             <div class="info-div">
                 <h5><a class="link" href="/listing/:<%=i.id%>"><%=i.title%></a></h5>
+                <p>Owned by <b><i><%= i.owner.username%></i></b></p>
                 <p><%=i.description%></p>
                 <p><b>Price: </b> &#8377;<%=(i.price).toLocaleString("en-IN")%></p>
                 <p><b>Location: </b><%=i.location%></p>
                 <p><b>Country: </b><%=i.country%></p>
-                <div class="btnAdjust">
-                    <form method="get" action="/listing/<%=i.id%>/edit">
-                        <button class="btn btn-danger edit">Edit</button>
-                    </form>
-                    <form method="POST" action="/listing/<%=i.id%>?_method=DELETE">
-                        <button class="btn btn-dark delete">Delete</button>
-                    </form>
-                </div>
+                <%if(rightUser && rightUser.username==owner){%>
+                    <div class="btnAdjust">
+                        <form method="get" action="/listing/<%=i.id%>/edit">
+                            <button class="btn btn-danger edit">Edit</button>
+                        </form>
+                        <form method="POST" action="/listing/<%=i.id%>?_method=DELETE">
+                            <button class="btn btn-dark delete">Delete</button>
+                        </form>
+                    </div>
+                <%}%>
             </div>  
         </div>
     </div>

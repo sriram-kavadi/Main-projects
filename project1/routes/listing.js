@@ -11,8 +11,11 @@ const {listingSchema,reviewSchema}=require("../schema")
 const mongoose = require("mongoose");
 // isLoggedIn middleware
 const {isLoggedIn}=require("../middleware");
+// isOwner middleware
+const {isOwner}=require("../middleware")
 //view listing
 router.get("/",asyncwrap(async (req,res)=>{
+    console.log(req.user)
     const allListing=await listing.find();
     if(allListing.length===0){
         throw new ExpressError(404,"No listing found")
@@ -26,23 +29,14 @@ router.get("/new",isLoggedIn,(req,res)=>{
     res.render("listing/newindex.ejs");
 })
 
-
-// post validate check for create listing
-const validate=(req,res,next)=>{
-    const {error} = listingSchema.validate(req.body);
-    if(error){
-        let errMsg=error.details.map(el=>el.message).join(",")
-        throw new ExpressError(400,errMsg)
-    }else{
-        next();
-    }
-
-}
+// validate middleware
+const {validate}=require("../middleware")
 
 //post request for creating list
 router.post("/",isLoggedIn,validate,asyncwrap( async (req, res) => {
     // directly use req.body, not req.body.listing
     const newList = new listing(req.body);
+    newList.owner=req.user._id;
     await newList.save();
     if(newList){
         req.flash("success","Listing is created");
@@ -59,11 +53,13 @@ router.get("/:id",asyncwrap( async (req,res,next)=>{
     if (id.startsWith(":")) {
         id = id.slice(1);
     }
-    const idListing = await listing.findById(id).populate("reviews");
+    const idListing = await listing.findById(id).populate("reviews").populate("owner");
+    console.log(idListing);
+    console.log(req.user);
     if(!idListing){
         throw new ExpressError(404,"Invalid id");
     }
-    res.render("listing/idIndex.ejs", { i:idListing });
+    res.render("listing/idIndex.ejs", { i:idListing ,owner:idListing.owner.username,rightUser:req.user});
 
 }))
 
@@ -84,13 +80,10 @@ router.get("/:id/edit",isLoggedIn,asyncwrap( async (req,res,next)=>{
 }))
 
 // updating the list using the id
-router.put("/:id",isLoggedIn, asyncwrap( async (req, res,next) => {
-    let { id } = req.params; // get id from URL
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        throw new ExpressError(400, "Invalid ID format");
-    }
-    let updatedData = req.body; // get updated fields from form
-    let putListing= await listing.findByIdAndUpdate(id, updatedData);
+router.put("/:id",isLoggedIn,isOwner,validate, asyncwrap( async (req, res,next) => {
+    let {id}=req.params;
+    let updatedData = req.body;
+    let putListing= await listing.findByIdAndUpdate(id, updatedData,{ new: true, runValidators: true });
     if(!putListing){
         throw new ExpressError(404, "Listing not found");
     }
@@ -101,11 +94,8 @@ router.put("/:id",isLoggedIn, asyncwrap( async (req, res,next) => {
 }));
 
 //deleting a list by using id
-router.delete("/:id",isLoggedIn,asyncwrap( async (req,res,next)=>{
+router.delete("/:id",isLoggedIn,isOwner,asyncwrap( async (req,res,next)=>{
     let {id}=req.params;
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        throw new ExpressError(400, "Invalid ID format");
-    }
     let deleteListing= await listing.findByIdAndDelete(id);
     if(!deleteListing){
         throw new ExpressError(404, "Listing not found");
