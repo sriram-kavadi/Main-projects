@@ -53,9 +53,14 @@ router.get("/:id",asyncwrap( async (req,res,next)=>{
     if (id.startsWith(":")) {
         id = id.slice(1);
     }
-    const idListing = await listing.findById(id).populate("reviews").populate("owner");
-    console.log(idListing);
-    console.log(req.user);
+    const idListing = await listing.findById(id)
+    .populate({
+        path: "reviews",
+        populate: {
+        path: "author"
+        }
+    })
+    .populate("owner");
     if(!idListing){
         throw new ExpressError(404,"Invalid id");
     }

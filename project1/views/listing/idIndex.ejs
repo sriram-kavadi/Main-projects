@@ -6,13 +6,13 @@
                 <img src="<%=i.image%>" class="picture" alt="picture" >
             </div>
             <div class="info-div">
-                <h5><a class="link" href="/listing/:<%=i.id%>"><%=i.title%></a></h5>
+                <h5><a class="link" href="/listing/<%=i.id%>"><%=i.title%></a></h5>
                 <p>Owned by <b><i><%= i.owner.username%></i></b></p>
                 <p><%=i.description%></p>
                 <p><b>Price: </b> &#8377;<%=(i.price).toLocaleString("en-IN")%></p>
                 <p><b>Location: </b><%=i.location%></p>
                 <p><b>Country: </b><%=i.country%></p>
-                <%if(rightUser && rightUser.username==owner){%>
+                <%if(rightUser && rightUser._id.equals(i.owner._id)){%>
                     <div class="btnAdjust">
                         <form method="get" action="/listing/<%=i.id%>/edit">
                             <button class="btn btn-danger edit">Edit</button>
@@ -60,13 +60,15 @@
             <div class="col card">
                 <div class="card-body reviewBody">
                     <div class="username">
-                        <h4>Unknow User</h4>
+                        <h4 class="link"><%=iS.author.username%></h4>
                     </div>
                     <h6 class="card-title reviewStar" data-rating="<%=iS.rating%>" data-date="<%= iS.createAt %>"></h6>
                     <p class="card-text"><%= iS.comment  %></p>
-                    <form method="POST" action="/listing/<%=i.id%>/review/<%=iS.id%>?_method=DELETE">
-                        <button class="btn btn-primary" type="submit">Delete Review</button>
-                    </form>
+                    <% if(rightUser && iS.author._id.equals(rightUser._id)){%>
+                        <form method="POST" action="/listing/<%=i.id%>/review/<%=iS.id%>?_method=DELETE">
+                            <button class="btn btn-primary" type="submit">Delete Review</button>
+                        </form>
+                    <%}%>
                 </div>
             </div>
     <% } %>

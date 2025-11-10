@@ -15,10 +15,13 @@ const mongoose = require("mongoose");
 const {isLoggedIn}=require("../middleware")
 //joi validation checker middleware
 const {reviewValidate}=require("../middleware")
+// isAuthor middleware set-up
+const {isAuthor}=require("../middleware")
 //post request to create a new review
 router.post("/",isLoggedIn,reviewValidate,asyncwrap(async(req,res)=>{
     let {id}=req.params;
     const newReview = new review(req.body);
+    newReview.author=req.user._id;
     await newReview.save();
     console.log("done")
     if (id.startsWith(":")) {
@@ -40,11 +43,8 @@ router.post("/",isLoggedIn,reviewValidate,asyncwrap(async(req,res)=>{
 }))
 
 //review delete route 
-router.delete("/:reviewId",isLoggedIn,asyncwrap(async(req,res)=>{
+router.delete("/:reviewId",isLoggedIn,isAuthor,asyncwrap(async(req,res)=>{
     let {id,reviewId}=req.params;
-    if ((!mongoose.Types.ObjectId.isValid(id))||(!mongoose.Types.ObjectId.isValid(reviewId))) {
-        throw new ExpressError(400, "Invalid ID format");
-    }
     let listingUpdate=await listing.findByIdAndUpdate(id,{$pull:{reviews:reviewId}});
     let reviewDelete=await review.findByIdAndDelete(reviewId);
     if(!listingUpdate){
