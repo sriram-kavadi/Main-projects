@@ -14,29 +14,23 @@ const {isLoggedIn}=require("../middleware");
 // isOwner middleware
 const {isOwner}=require("../middleware")
 const controllerListing=require("../controllers/listing")
-//view listing
-router.get("/",asyncwrap(controllerListing.index))
-
-//create listing
-router.get("/new",isLoggedIn,controllerListing.creatingListing)
-
 // validate middleware
 const {validate}=require("../middleware")
 
-//post request for creating list
-router.post("/",isLoggedIn,validate,asyncwrap(controllerListing.postCreate));
+//view listing and post listing
+router
+    .route("/")
+    .get(asyncwrap(controllerListing.index))
+    .post(isLoggedIn,validate,asyncwrap(controllerListing.postCreate))
+//create listing
+router.get("/new",isLoggedIn,controllerListing.creatingListing)
+//get put delete list by a id
+router
+    .route("/:id")
+    .get(asyncwrap( controllerListing.getIdList))
+    .put(isLoggedIn,isOwner,validate, asyncwrap( controllerListing.putEditList))
+    .delete(isLoggedIn,isOwner,asyncwrap( controllerListing.deleteList))
 
-//get list by a id
-router.get("/:id",asyncwrap( controllerListing.getIdList))
-
-//edit a list using a id
 router.get("/:id/edit",isLoggedIn,asyncwrap( controllerListing.getIdEditList))
-
-// updating the list using the id
-router.put("/:id",isLoggedIn,isOwner,validate, asyncwrap( controllerListing.putEditList));
-
-//deleting a list by using id
-router.delete("/:id",isLoggedIn,isOwner,asyncwrap( controllerListing.deleteList))
-
 
 module.exports=router;
