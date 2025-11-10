@@ -4,8 +4,6 @@ const review=require("./models/review")
 const {listingSchema,reviewSchema}=require("./schema")
 const ExpressError=require("./utils/ExpressError")
 module.exports.isLoggedIn=(req,res,next)=>{
-    console.log("hello")
-    console.log(req.originalUrl)
     if(!req.isAuthenticated()){
         req.session.redirectUrl=req.originalUrl;
         req.flash("error","You must to be logged")
