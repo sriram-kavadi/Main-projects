@@ -16,8 +16,12 @@ module.exports.creatingListing=(req,res)=>{
 
 module.exports.postCreate=async (req, res) => {
     // directly use req.body, not req.body.listing
+    let url=req.file.path;
+    let filename=req.file.filename;
+    console.log(url," - ",filename)
     const newList = new listing(req.body);
     newList.owner=req.user._id;
+    newList.image={url,filename};
     await newList.save();
     if(newList){
         req.flash("success","Listing is created");

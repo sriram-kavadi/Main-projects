@@ -1,3 +1,4 @@
+
 const express=require("express");
 const router=express.Router();
 //set-up for the wrapAsyc function
@@ -16,12 +17,16 @@ const {isOwner}=require("../middleware")
 const controllerListing=require("../controllers/listing")
 // validate middleware
 const {validate}=require("../middleware")
+const multer=require("multer")
+const {storage}=require("../cloudConfig")
+const upload=multer({storage})
 
 //view listing and post listing
 router
     .route("/")
     .get(asyncwrap(controllerListing.index))
-    .post(isLoggedIn,validate,asyncwrap(controllerListing.postCreate))
+    .post(isLoggedIn,upload.single("image"),validate,asyncwrap(controllerListing.postCreate))
+
 //create listing
 router.get("/new",isLoggedIn,controllerListing.creatingListing)
 //get put delete list by a id

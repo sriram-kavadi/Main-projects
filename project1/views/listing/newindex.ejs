@@ -2,7 +2,7 @@
 <body >
     <div class="bodyNew">    
     <div class="form-div">
-        <form method="post" novalidate class="validationFlex validationFlex needs-validation" action="/listing">
+        <form method="post" novalidate class="validationFlex validationFlex needs-validation" action="/listing" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="title" class="form-label">Title: </label>
                 <input type="text" id="title" class="form-control" name="title" required>
@@ -24,8 +24,8 @@
                 </div>
             </div>
             <div class="mb-3">
-                <label for="image" class="form-label">Image(url-link): </label>
-                <input type="text" id="image" name="image"  class="form-control">
+                <label for="image" class="form-label">Upload Listing Image:  </label>
+                <input type="file" id="image" name="image"  class="form-control">
                 <div class="valid-feedback">
                         Looks good!
                 </div>
