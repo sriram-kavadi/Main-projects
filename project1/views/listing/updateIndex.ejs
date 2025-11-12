@@ -2,7 +2,7 @@
 <body >
     <div class="bodyNew">    
     <div class="form-div">
-        <form method="POST" novalidate class="validationFlex needs-validation"   action="/listing/<%=i.id%>?_method=PUT">
+        <form method="POST" novalidate class="validationFlex needs-validation"   action="/listing/<%=i.id%>?_method=PUT" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="title" class="form-label">Title: </label>
                 <input type="text" id="title" class="form-control" name="title" required value="<%=i.title%>">
@@ -23,9 +23,14 @@
                     Please choose a Description.
                 </div>
             </div>
+            <label >Original Image: </label>
+            <div class="text-center">
+                <img src="<%= i.image.url %>" class="rounded" alt="<%= i.image.filename %>" height="150px">
+            </div>
+            <br>
             <div class="mb-3">
-                <label for="image" class="form-label">Image(url-link): </label>
-                <input type="text" id="image" name="image"  class="form-control" value="<%=i.image%>">
+                <label for="image" class="form-label">Upload New Image:  </label>
+                <input type="file" id="image" name="image"  class="form-control">
                 <div class="valid-feedback">
                         Looks good!
                 </div>

@@ -1,6 +1,6 @@
 const listing = require("../models/listing");
 const mongoose = require("mongoose");
-
+const cloudinary = require('cloudinary').v2;
 module.exports.index=async (req,res)=>{
     console.log(req.user)
     const allListing=await listing.find();
@@ -18,7 +18,6 @@ module.exports.postCreate=async (req, res) => {
     // directly use req.body, not req.body.listing
     let url=req.file.path;
     let filename=req.file.filename;
-    console.log(url," - ",filename)
     const newList = new listing(req.body);
     newList.owner=req.user._id;
     newList.image={url,filename};
@@ -67,18 +66,31 @@ module.exports.getIdEditList=async (req,res,next)=>{
     res.render("listing/updateIndex.ejs",{i:editListing});
 }
 
-module.exports.putEditList=async (req, res,next) => {
-    let {id}=req.params;
-    let updatedData = req.body;
-    let putListing= await listing.findByIdAndUpdate(id, updatedData,{ new: true, runValidators: true });
-    if(!putListing){
-        throw new ExpressError(404, "Listing not found");
+module.exports.putEditList = async (req, res, next) => {
+    const { id } = req.params;
+    const updatedData = req.body;
+    const existingListing = await listing.findById(id);
+    if (!existingListing) {
+      throw new ExpressError(404, "Listing not found");
     }
-    if(putListing){
-        req.flash("success","Listing is updated");
+    const originalFilename = existingListing.image.filename;
+    const putListing = await listing.findByIdAndUpdate(id, updatedData, {
+      new: true,
+      runValidators: true,
+    });
+    if (req.file) {
+      const url = req.file.path;
+      const filename = req.file.filename;
+      if (originalFilename && originalFilename !== "listingimage") {
+        await cloudinary.uploader.destroy(originalFilename);
+      }
+      putListing.image = { url, filename };
+      await putListing.save();
     }
+    req.flash("success", "Listing updated successfully!");
     res.redirect(`/listing/${id}`);
-}
+};
+
 
 module.exports.deleteList=async (req,res,next)=>{
     let {id}=req.params;

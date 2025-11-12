@@ -33,7 +33,7 @@ router.get("/new",isLoggedIn,controllerListing.creatingListing)
 router
     .route("/:id")
     .get(asyncwrap( controllerListing.getIdList))
-    .put(isLoggedIn,isOwner,validate, asyncwrap( controllerListing.putEditList))
+    .put(isLoggedIn,isOwner,upload.single("image"),validate, asyncwrap( controllerListing.putEditList))
     .delete(isLoggedIn,isOwner,asyncwrap( controllerListing.deleteList))
 
 router.get("/:id/edit",isLoggedIn,asyncwrap( controllerListing.getIdEditList))
