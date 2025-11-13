@@ -239,13 +239,6 @@ input[type=number] {
     align-items: center;
 }
 
-@media (max-width:370px) {
-    .setNav1 a{
-        font-size: 0.75rem !important;
-    }
-    
-}
-
 .setNav2{
     width: 50% !important;
 }
@@ -266,6 +259,20 @@ input[type=number] {
         justify-content: space-evenly !important;
     }
     
+}
+
+
+
+@media (max-width:1020px) {
+    .setNav3{
+        font-size: 0.8rem !important;
+    }
+    .setNav1 a{
+        font-size: 0.75rem !important;
+    }
+    .setNav2{
+        font-size: 0.8rem !important;
+    }
 }
 
 .searchInput{
