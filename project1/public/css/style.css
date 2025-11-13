@@ -20,8 +20,14 @@ input[type=number] {
     
 }
 
+.nav-link-add{
+    color:#2d2d2d !important;
+    text-decoration: none !important;
+}
+
 .nav-link{
-    color: black !important;
+    color: #c05861 !important;
+    font-weight: 635 !important;
 }
 
 .icons{
@@ -208,6 +214,90 @@ input[type=number] {
 
 .form-range{
     width: 35% !important;
+}
+
+.navlogo{
+    color: #2d2d2d;
+    font-weight: 500;
+}
+
+.flexFluid{
+    display: flex !important;
+    flex-direction: row !important;
+}
+
+.searchDiv{
+    height: 78vh !important;
+}
+
+.setNav1{
+    padding-left: 1% !important;
+    font-size: 1rem !important;
+    width: 20% !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center;
+}
+
+@media (max-width:370px) {
+    .setNav1 a{
+        font-size: 0.75rem !important;
+    }
+    
+}
+
+.setNav2{
+    width: 50% !important;
+}
+
+@media (max-width:770px) {
+    .setNav3Background{
+        background-color: rgba(255,255,255,0.5) !important
+    }
+}
+
+
+@media (min-width:770px) {
+    .setNav3{
+        width: 30% !important;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-evenly !important;
+    }
+    
+}
+
+.searchInput{
+    color: #c05861 !important;
+    font-size: large !important;
+    font-weight: 550 !important;
+}
+
+.searchInput:focus {
+    border-color: red !important;
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.4) !important;
+}
+
+.searchName{
+    color: #c05861 !important;
+}
+
+
+
+.searchButton{
+    height: 5vh !important;
+    width: 5vh !important;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    align-items: center !important;
+    border-radius: 50% !important;
+}
+
+.searchButton:hover{
+    border-color: red !important;
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.4) !important;
 }
 
 .info-div{

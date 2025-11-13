@@ -1,0 +1,23 @@
+<% layout("/layouts/boilerplate")%>
+<body>
+    <div class="searchDiv">
+        <h5>related to the search <u><i class="searchName"><%=searchList%></i></u></h5>
+            <div class="container text-center">
+                <div class="row row-cols-2">
+            <%for(i of data){%>
+                <div class="card col colEditBoot" style="width: 18rem;">
+                    <div class="img-container">
+                        <a href="/listing/<%=i.id%>"><img src="<%=i.image.url%>" class="card-img-top" alt="picture" ></a>
+                    </div>
+                    <div class="">
+                        <h5 class="card-title"><%=i.title%></h5>
+                        <p class="card-text"><b>Price: </b>&#8377;<%=(i.price).toLocaleString("en-IN")%>/night</p>
+                        <p class="card-text"><b>Country: </b><%=i.country%></p>
+                    
+                    </div>
+                </div>
+            <%}%>
+            </div>
+        </div>
+    </div>
+</body>

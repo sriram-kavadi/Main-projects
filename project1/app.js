@@ -80,17 +80,9 @@ app.use("/listing/:id/review",reviewRoute);
 //set-up for user route
 const userRoute=require("./routes/user");
 app.use("/",userRoute);
-//demo user
-// app.get("/demouser",async(req,res)=>{
-//     let demouser=new user(
-//         {
-//             email:"kavadi.nikhil@gmail.com",
-//             username:"nikhil15_07"
-//         }
-//     )
-//     let registerUser=await user.register(demouser,"helloworld");
-//     res.send(registerUser); 
-// })
+//set-up for search route
+const searchRoute=require("./routes/search");
+app.use("/search",searchRoute);
 
 //start-up route
 app.get("/", (req, res) => {

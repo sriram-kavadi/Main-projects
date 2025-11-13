@@ -1,24 +1,35 @@
 <nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#"><i class="fa-solid fa-compass" alt="logo" height="20vw" style="color: #df3d4a;"></i></a>
+  <div class="container-fluid flexFluid">
+
+    <div class="setNav1">
+      <a class="navbar-brand navlogo" href="/listing"><i class="fa-solid fa-compass" alt="logo" height="20vw" style="color: #df3d4a;"></i> &nbsp; Explore</a>
+    </div>
+
+    <div class="setNav2" >
+      <form method="GET" novalidate class="d-flex needs-validation" role="search" action="/search">
+        <input class="form-control me-2 searchInput" type="search" name="searchList" placeholder="Search" aria-label="Search" required/>
+        <button class="btn btn-outline-danger searchButton"  type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+      </form>
+    </div>
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" >
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-link " href="/">Home</a>
-        <a class="nav-link" href="/listing">All Listings</a>
-        <a class="nav-link" href="/listing/new">Add New Listings</a>
-      </div>
-      <div class="navbar-nav ms-auto">
-        <% if(!currUser){%>
-          <a class="nav-link" href="/signup">Sign-Up</a>
-          <a class="nav-link" href="/login">Login</a>
-        <%}%>
-        <% if(currUser){%>
-          <a class="nav-link" href="/logout">Log-out</a>
-        <%}%>
-      </div>
+
+    <div class="collapse navbar-collapse setNav3 " id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-link-add setNav3Background" href="/listing/new">Add New Listings</a>
+        </div>
+        <div class="navbar-nav ">
+          <% if(!currUser){%>
+            <a class="nav-link setNav3Background" href="/signup">Sign-Up</a>
+            <a class="nav-link setNav3Background" href="/login">Login</a>
+          <%}%>
+          <% if(currUser){%>
+            <a class="nav-link setNav3Background" href="/logout">Log-out</a>
+          <%}%>
+        </div>
+      
     </div>
   </div>
 </nav>
