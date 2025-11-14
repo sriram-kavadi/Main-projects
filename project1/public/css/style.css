@@ -16,7 +16,7 @@ input[type=number] {
 .navbar{
     height: 10vh;
     font-size: larger;
-    background-color: rgba(255,255,255,0.5) !important;
+    background-color: rgba(255,255,255,1) !important;
     
 }
 
@@ -227,7 +227,7 @@ input[type=number] {
 }
 
 .searchDiv{
-    height: 78vh !important;
+    min-height: 68vh !important;
 }
 
 .setNav1{
@@ -239,6 +239,57 @@ input[type=number] {
     align-items: center;
 }
 
+.filters{
+    padding-left: 2vw;
+    display: flex;
+    flex-direction: row;
+    height: 8vh;
+    gap:0.5vw;
+    margin-top:1vh;
+    margin-bottom: 1vh;
+    border-bottom: 0.10vh solid rgba(0, 0,0, 0.2);
+}
+
+.filter{
+    text-decoration: none;
+    color: black;
+    font-size: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    width: 5vw;
+}
+
+@media (max-width:1520px) {
+    .filter{
+        font-size: 0.7rem;
+    }
+    .filters{
+        height: 6vh;
+    }
+    
+}
+
+@media (max-width:1050px) {
+    .filter{
+        font-size: 0.6rem;
+    }
+    .filters{
+        height: 4vh;
+    }
+}
+
+@media (max-width:900px){
+    .filter span{
+        display:none;
+    }
+}
+
+.filter:hover{
+    opacity: 0.8;
+}
 .setNav2{
     width: 50% !important;
 }
@@ -290,6 +341,9 @@ input[type=number] {
     color: #c05861 !important;
 }
 
+.searchH5{
+    padding-left: 1vw !important;
+}
 
 
 .searchButton{

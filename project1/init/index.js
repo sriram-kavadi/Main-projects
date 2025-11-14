@@ -1,26 +1,23 @@
 const mongoose = require("mongoose");
 const initdata = require("./data.js");
-const Listing = require("../models/listing.js"); // Capitalize model names (convention)
-
-// Connect to MongoDB
-main()
-  .then(() => {
-    console.log("MongoDB connected");
-  })
-  .catch((err) => {
-    console.log(err);
-  }); 
+const Listing = require("../models/listing.js");
 
 async function main() {
   await mongoose.connect("mongodb://127.0.0.1:27017/project1");
+  console.log("MongoDB connected");
 }
 
-// Initialize database
 const initDB = async () => {
   await Listing.deleteMany({});
-  const listings =initdata.map((obj)=>({...obj,owner:'690fa16eb69d215b035301c7'}));
+  const listings = initdata.map((obj) => ({
+    ...obj,
+    owner: "690fa16eb69d215b035301c7"
+  }));
+  
   await Listing.insertMany(listings);
   console.log("Data was initialized");
+
+  mongoose.connection.close();
 };
 
-initDB()
+main().then(() => initDB());

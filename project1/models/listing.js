@@ -21,7 +21,8 @@ const dataSchema = new mongoose.Schema({
   owner:{
     type:mongoose.Schema.Types.ObjectId,
     ref:"User"
-  }
+  },
+  category:String
   
 });
 

@@ -1,23 +1,87 @@
 <% layout("/layouts/boilerplate")%>
-<body>
-    <div class="searchDiv">
-        <h5>related to the search <u><i class="searchName"><%=searchList%></i></u></h5>
-            <div class="container text-center">
-                <div class="row row-cols-2">
-            <%for(i of data){%>
-                <div class="card col colEditBoot" style="width: 18rem;">
-                    <div class="img-container">
-                        <a href="/listing/<%=i.id%>"><img src="<%=i.image.url%>" class="card-img-top" alt="picture" ></a>
-                    </div>
-                    <div class="">
-                        <h5 class="card-title"><%=i.title%></h5>
-                        <p class="card-text"><b>Price: </b>&#8377;<%=(i.price).toLocaleString("en-IN")%>/night</p>
-                        <p class="card-text"><b>Country: </b><%=i.country%></p>
-                    
-                    </div>
+
+    <div class="filters">
+        <a href="/search/trending" class="filter">
+            <i class="fa-solid fa-fire"></i>
+            <span class="spans">Trending</span>
+        </a>
+
+        <a href="/search/rooms" class="filter">
+            <i class="fa-solid fa-bed"></i>
+            <span class="spans">Rooms</span>
+        </a>
+
+        <a href="/search/iconic-city" class="filter">
+            <i class="fa-solid fa-mountain-city"></i>
+            <span class="spans">Iconic City</span>
+        </a>
+
+        <a href="/search/mountains" class="filter">
+            <i class="fa-solid fa-mountain"></i>
+            <span>Mountains</span>
+        </a>
+
+        <a href="/search/castles" class="filter">
+            <i class="fa-brands fa-fort-awesome"></i>
+            <span>Castles</span>
+        </a>
+
+        <a href="/search/pools" class="filter" style="width: 7vw;">
+            <i class="fa-solid fa-person-swimming"></i>
+            <span>Amazing Pools</span>
+        </a>
+
+        <a href="/search/camping" class="filter">
+            <i class="fa-solid fa-campground"></i>
+            <span>Camping</span>
+        </a>
+
+        <a href="/search/farms" class="filter">
+            <i class="fa-solid fa-wheat-awn"></i>
+            <span>Farms</span>
+        </a>
+
+        <a href="/search/arctic" class="filter">
+            <i class="fa-solid fa-snowflake"></i>
+            <span>Arctic</span>
+        </a>
+
+    </div>
+    <% if(errorMsg && errorMsg.length){%>
+        <div class="alert alert-warning successStyle" role="alert">
+            <%=errorMsg%>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <%}%>
+    <% if(successMsg && successMsg.length){%>
+        <div class="alert alert-success successStyle" role="alert">
+            <%=successMsg%>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <%}%>
+    <% if(!(searchList=="none")){ %>
+        <h5 class="searchH5">related to the search <u><i class="searchName"><%=searchList%></i></u></h5>
+    <%}%>
+        <div 
+            class="container text-center searchDiv"
+            <% if (searchList !== "none") { %>
+                style="min-height:63vh !important"
+            <% } %>
+        >
+            <div class="row row-cols-2">
+        <%for(i of data){%>
+            <div class="card col colEditBoot" style="width: 18rem;">
+                <div class="img-container">
+                    <a href="/listing/<%=i.id%>"><img src="<%=i.image.url%>" class="card-img-top" alt="picture" ></a>
                 </div>
-            <%}%>
+                <div class="">
+                    <h5 class="card-title"><%=i.title%></h5>
+                    <p class="card-text"><b>Price: </b>&#8377;<%=(i.price).toLocaleString("en-IN")%>/night</p>
+                    <p class="card-text"><b>Country: </b><%=i.country%></p>
+                
+                </div>
             </div>
+        <%}%>
         </div>
     </div>
-</body>
+    

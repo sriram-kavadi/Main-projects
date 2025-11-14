@@ -1,5 +1,17 @@
 <% layout("/layouts/boilerplate")%>
-<body >
+<% if(errorMsg && errorMsg.length){%>
+    <div class="alert alert-warning successStyle" role="alert">
+        <%=errorMsg%>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<%}%>
+<% if(successMsg && successMsg.length){%>
+    <div class="alert alert-success successStyle" role="alert">
+        <%=successMsg%>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<%}%>
+
     <div class="bodyNew">    
     <div class="form-div">
         <form method="post" novalidate class="validationFlex validationFlex needs-validation" action="/listing" enctype="multipart/form-data">
@@ -69,4 +81,4 @@
         </form>
     </div>
     </div>
-</body>
+
