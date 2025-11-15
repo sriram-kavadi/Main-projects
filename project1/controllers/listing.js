@@ -100,6 +100,25 @@ module.exports.putEditList = async (req, res, next) => {
       new: true,
       runValidators: true,
     });
+    let location = req.body.location;
+
+    if (!location || location.trim() === "") {
+        req.flash("error", "Location cannot be empty");
+        return res.redirect(`/listing/${id}`);
+    }
+
+    let normalizedNew = location.trim().toLowerCase();
+    let normalizedOld = existingListing.location.trim().toLowerCase();
+
+    if (normalizedNew !== normalizedOld) {
+        const coordinates = await geocode(location);
+        if (!coordinates) {
+            req.flash("error", "Invalid location");
+            return res.redirect(`/listing/${id}`);
+        }
+        putListing.coordinates = coordinates;
+        await putListing.save();
+    }
     if (req.file) {
       const url = req.file.path;
       const filename = req.file.filename;
