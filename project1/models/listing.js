@@ -22,8 +22,11 @@ const dataSchema = new mongoose.Schema({
     type:mongoose.Schema.Types.ObjectId,
     ref:"User"
   },
-  category:String
-  
+  category:String,
+  coordinates:{
+    lat:Number,
+    lng:Number
+  }
 });
 
 dataSchema.post("findOneAndDelete",async(listing)=>{

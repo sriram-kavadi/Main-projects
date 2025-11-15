@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Leaflet Map</title>
+
+    <!-- Leaflet CSS (CDN) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+    <style>
+        /* Your custom CSS */
+        #map {
+            height:100vh;
+            width: 100%;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>Location Map</h2>
+<div id="map"></div>
+
+<!-- Leaflet JS (CDN) -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+    // Your map code
+    const map = L.map("map").setView([12.9716, 77.5946], 10);
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+    }).addTo(map);
+
+    // Example marker (Bangalore)
+    L.marker([12.9716, 77.5946])
+        .addTo(map)
+        .bindPopup("Bangalore")
+        .openPopup();
+</script>
+
+</body>
+</html>

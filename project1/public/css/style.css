@@ -238,6 +238,20 @@ input[type=number] {
     padding-right: 1vw;
 }
 
+.mapHeading{
+    align-self: flex-start;
+}
+
+.mapDiv{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-left: 12vw;
+    padding-right: 12vw;
+    
+}
+
 .searchDiv{
     min-height: 68vh !important;
 }

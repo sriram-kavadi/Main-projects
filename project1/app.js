@@ -84,10 +84,12 @@ app.use("/",userRoute);
 const searchRoute=require("./routes/search");
 app.use("/search",searchRoute);
 
-//start-up route
-app.get("/", (req, res) => {
-    res.send("hi, I am root");
-});
+app.use("/map",(req,res)=>{
+    res.render("listing/map.ejs");
+    console.log("map route");
+})
+
+
 
 //works if route does not exits
 app.use((req, res, next) => {

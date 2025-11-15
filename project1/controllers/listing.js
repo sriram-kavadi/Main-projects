@@ -1,6 +1,7 @@
 const listing = require("../models/listing");
 const mongoose = require("mongoose");
 const cloudinary = require('cloudinary').v2;
+const fetch = require("node-fetch");
 module.exports.index=async (req,res)=>{
     console.log(req.user)
     const allListing=await listing.find();
@@ -13,7 +14,20 @@ module.exports.index=async (req,res)=>{
 module.exports.creatingListing=(req,res)=>{
     res.render("listing/newindex.ejs");
 }
+async function geocode(address) {
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${address}`;
+    const res = await fetch(url);
+    const data = await res.json();
 
+    if (!data || data.length === 0) {
+        return null; // no results
+    }
+
+    return {
+        lat: parseFloat(data[0].lat),
+        lng: parseFloat(data[0].lon)
+    };
+}
 module.exports.postCreate=async (req, res) => {
     // directly use req.body, not req.body.listing
     let url=req.file.path;
@@ -21,6 +35,14 @@ module.exports.postCreate=async (req, res) => {
     const newList = new listing(req.body);
     newList.owner=req.user._id;
     newList.image={url,filename};
+    let { location } = req.body;
+    const coordinates = await geocode(location);
+    if(!coordinates){
+        req.flash("error","Invalid location");
+        return res.redirect("/listing/new")
+    }
+    console.log(coordinates);
+    newList.coordinates = coordinates;
     await newList.save();
     if(newList){
         req.flash("success","Listing is created");
