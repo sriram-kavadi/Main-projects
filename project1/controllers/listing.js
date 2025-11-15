@@ -29,6 +29,8 @@ async function geocode(address) {
     };
 }
 module.exports.postCreate=async (req, res) => {
+    console.log("hey!!");
+    console.log(req.body);
     // directly use req.body, not req.body.listing
     let url=req.file.path;
     let filename=req.file.filename;

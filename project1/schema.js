@@ -8,8 +8,7 @@ const listingSchema=joi.object({
     country:joi.string().required(),
     price:joi.number().required().min(0),
     image:joi.string().allow("",null),
-    category:joi.string()
-
+    category:joi.string().required()
 })
 const reviewSchema=joi.object({
     comment:joi.string().required(),

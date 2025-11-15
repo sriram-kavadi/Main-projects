@@ -60,6 +60,26 @@
                     Please choose a Price.
                 </div>
             </div>
+            <div class="mb-3">
+                <label for="form-select">Category: </label>
+                <select class="form-select" aria-label="Default select example" name="category" required>
+                    <option value="trending" <%if(i.category=="trending"){%>selected<%}%> >Trending</option>
+                    <option value="rooms" <%if(i.category=="rooms"){%>selected<%}%> >Rooms</option>
+                    <option value="iconic-city" <%if(i.category=="iconic-city"){%>selected<%}%> >Iconic City</option>
+                    <option value="mountains" <%if(i.category=="mountains"){%>selected<%}%>>Mountains</option>
+                    <option value="castles" <%if(i.category=="castles"){%>selected<%}%> >Castles</option>
+                    <option value="pools" <%if(i.category=="pools"){%>selected<%}%> >Amazing Pools</option>
+                    <option value="camping" <%if(i.category=="camping"){%>selected<%}%> >Camping</option>
+                    <option value="farms" <%if(i.category=="farms"){%>selected<%}%> >Farms</option>
+                    <option value="arctic" <%if(i.category=="arctic"){%>selected<%}%> >Arctic</option>
+            </select>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+                <div class="invalid-feedback">
+                    Please select category.
+                </div>
+            </div>
             <div class="mb-3 place">
                 <div class="mb-3 info">
                     <label for="location" class="form-label">Location: </label>
@@ -71,6 +91,7 @@
                         Please choose a Location.
                     </div>
                 </div>
+                
                 <div class="mb-3 info">
                     <label for="country" class="form-label">Country: </label>
                     <input type="text" id="country" name="country"required class="form-control" value="<%=i.country%>">
