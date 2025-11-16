@@ -106,6 +106,10 @@ app.use("/",userRoute);
 const searchRoute=require("./routes/search");
 app.use("/search",searchRoute);
 
+app.use("/",(req,res)=>{
+    res.redirect("/listing")
+})
+
 app.use("/map",(req,res)=>{
     res.render("listing/map.ejs");
     console.log("map route");
