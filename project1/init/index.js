@@ -1,9 +1,13 @@
 const mongoose = require("mongoose");
 const initdata = require("./data.js");
 const Listing = require("../models/listing.js");
-
+if(process.env.NODE_ENV!="production"){
+    require('dotenv').config({path:"../.env"});
+}
+const  dbURL=process.env.mongoConnection;
+const owner=process.env.owner;
 async function main() {
-  await mongoose.connect("mongodb://127.0.0.1:27017/project1");
+  await mongoose.connect(dbURL);
   console.log("MongoDB connected");
 }
 
@@ -11,7 +15,7 @@ const initDB = async () => {
   await Listing.deleteMany({});
   const listings = initdata.map((obj) => ({
     ...obj,
-    owner: "690fa16eb69d215b035301c7"
+    owner: `${owner}`
   }));
   
   await Listing.insertMany(listings);

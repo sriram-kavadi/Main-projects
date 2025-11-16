@@ -1,7 +1,6 @@
 if(process.env.NODE_ENV!="production"){
     require('dotenv').config()
 }
-console.log(process.env)
 
 const express = require("express");
 const listing = require("./models/listing");
@@ -33,23 +32,46 @@ const { request } = require("http");
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname,"/public")))
 // Connect to MongoDB
+const  dbURL=process.env.mongoConnection;
+const owner=process.env.owner;
+const secret=process.env.secret;
 main().then(() => {
     console.log("connected to mongoDB");
 }).catch(err => {
     console.log(err);
 });
+
 //mongodb start-up
 async function main() {
-    await mongoose.connect("mongodb://127.0.0.1:27017/project1");
+    await mongoose.connect(dbURL);
 }
 
 //session npm package set-up
 const session=require("express-session");
-const sessionOptions={
-    secret:"mypeoples",
-    resave:false,
-    saveUninitialized:true
-}
+
+const MongoStore = require('connect-mongo');
+const mongoSecret=process.env.mongosecret;
+const store=MongoStore.create({
+    mongoUrl:dbURL,
+    crypto:{
+        secret:`${mongoSecret}`,
+    },
+    touchAfter:24*60*60
+})
+store.on("error", (err) => {
+    console.log("Error in Mongo session store", err);
+});
+const sessionOptions = {
+    store: store,
+    secret: secret,
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        expires: Date.now() + 7 * 24 * 60 * 60 * 1000,   
+        maxAge: 7 * 24 * 60 * 60 * 1000,                
+        httpOnly: true
+    }
+};
 app.use(session(sessionOptions))
 //flash npm package set-up
 const flash=require("connect-flash")
