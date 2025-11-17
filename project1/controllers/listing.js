@@ -16,28 +16,40 @@ module.exports.creatingListing=(req,res)=>{
 }
 async function geocode(address) {
     const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`;
-    const res = await fetch(url,{
+
+    const res = await fetch(url, {
         headers: {
-            'User-Agent': 'Wanderlust-App/1.0 (your-email@example.com)',
-            'Accept-Language': 'en'
+            "User-Agent": "Wanderlust-App/1.0 (contact@example.com)",
+            "Accept-Language": "en"
         }
     });
-    const data = await res.json();
 
-     if (!res.ok) {
-        console.error("Geocode failed:", await res.text());
+    // first check the status — DO NOT parse json yet
+    const text = await res.text();
+
+    if (!res.ok) {
+        console.error("Geocode failed:", text);
         return null;
     }
-    
+
+    let data;
+    try {
+        data = JSON.parse(text);
+    } catch (err) {
+        console.error("Failed to parse JSON:", text);
+        return null;
+    }
+
     if (!data || data.length === 0) {
-        return null; // no results
+        return null;
     }
 
     return {
         lat: parseFloat(data[0].lat),
-        lng: parseFloat(data[0].lon)
+        lng: parseFloat(data[0].lon),
     };
 }
+
 module.exports.postCreate=async (req, res) => {
     console.log("hey!!");
     console.log(req.body);
