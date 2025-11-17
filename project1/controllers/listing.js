@@ -15,40 +15,34 @@ module.exports.creatingListing=(req,res)=>{
     res.render("listing/newindex.ejs");
 }
 async function geocode(address) {
-    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`;
+    const query = encodeURIComponent(address);
+    const url = `https://api.opencagedata.com/geocode/v1/json?q=${query}&key=${process.env.OPENCAGE_KEY}`;
 
-    const res = await fetch(url, {
-        headers: {
-            "User-Agent": "Wanderlust-App/1.0 (contact@example.com)",
-            "Accept-Language": "en"
-        }
-    });
-
-    // first check the status — DO NOT parse json yet
+    const res = await fetch(url);
     const text = await res.text();
 
     if (!res.ok) {
-        console.error("Geocode failed:", text);
+        console.error("OpenCage error:", text);
         return null;
     }
 
     let data;
     try {
         data = JSON.parse(text);
-    } catch (err) {
+    } catch (e) {
         console.error("Failed to parse JSON:", text);
         return null;
     }
 
-    if (!data || data.length === 0) {
+    if (!data.results || data.results.length === 0) {
         return null;
     }
 
-    return {
-        lat: parseFloat(data[0].lat),
-        lng: parseFloat(data[0].lon),
-    };
+    const { lat, lng } = data.results[0].geometry;
+
+    return { lat, lng };
 }
+
 
 module.exports.postCreate=async (req, res) => {
     console.log("hey!!");
