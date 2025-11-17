@@ -15,10 +15,20 @@ module.exports.creatingListing=(req,res)=>{
     res.render("listing/newindex.ejs");
 }
 async function geocode(address) {
-    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${address}`;
-    const res = await fetch(url);
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`;
+    const res = await fetch(url,{
+        headers: {
+            'User-Agent': 'Wanderlust-App/1.0 (your-email@example.com)',
+            'Accept-Language': 'en'
+        }
+    });
     const data = await res.json();
 
+     if (!res.ok) {
+        console.error("Geocode failed:", await res.text());
+        return null;
+    }
+    
     if (!data || data.length === 0) {
         return null; // no results
     }
